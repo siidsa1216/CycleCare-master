@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SecurityQuestionsActivity">
+
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/back_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.102"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/security_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/heading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Security Questions"
+            android:textColor="@color/aquamarine"
+            android:fontFamily="@font/poppins"
+            android:textSize="24dp"
+            android:textStyle="bold"
+            android:layout_marginLeft="30dp"
+            />
+
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:background="@drawable/info_icon"
+            android:layout_marginStart="90dp"
+            />
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/linearLayoutCompat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/heading">
+
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="321dp"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true"
+            android:dropDownWidth="match_parent"
+            android:popupBackground="@color/aquamarine"
+
+            />
+
+        <EditText
+            android:id="@+id/answerEditText"
+            android:layout_width="321dp"
+            android:layout_height="50dp"
+            android:layout_below="@id/spinner"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/shape_10dp_border"
+            android:hint="Your Answer"
+            android:paddingStart="20dp" />
+
+
+        <Spinner
+            android:id="@+id/spinner1"
+            android:layout_width="321dp"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true"
+            android:dropDownWidth="match_parent"
+            android:popupBackground="@color/aquamarine"
+
+            />
+
+        <EditText
+            android:id="@+id/answerEditText1"
+            android:layout_width="321dp"
+            android:layout_height="50dp"
+            android:layout_below="@id/spinner"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/shape_10dp_border"
+            android:hint="Your Answer"
+            android:paddingStart="20dp" />
+
+
+        <Spinner
+            android:id="@+id/spinner2"
+            android:layout_width="321dp"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true"
+            android:dropDownWidth="match_parent"
+            android:popupBackground="@color/aquamarine"
+
+            />
+
+        <EditText
+            android:id="@+id/answerEditText2"
+            android:layout_width="321dp"
+            android:layout_height="50dp"
+            android:layout_below="@id/spinner"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/shape_10dp_border"
+            android:hint="Your Answer"
+            android:paddingStart="20dp" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <Button
+        android:id="@+id/submitBtn"
+        android:layout_width="327dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_shape"
+        android:fontFamily="@font/poppins"
+        android:text="Submit"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat"
+        app:layout_constraintVertical_bias="0.093" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,45 @@
+<resources>
+    <string name="app_name">CycleCare</string>
+
+    //Headings
+
+    <string name="heading_one">Park Your Bike with Ease</string>
+    <string name="heading_two">QR Code</string>
+    <string name="heading_three">Locking Mechanism</string>
+
+    //Description
+
+    <string name="description1">CycleCare is your ultimate companion for securely parking your bike and ensuring peace of mind.</string>
+    <string name="description2">sit amet est placerat in egestas erat imperdiet sed euismod nisi porta lorem mollis aliquam</string>
+    <string name="description3">dui id ornare arcu odio ut sem nulla pharetra diam sit amet nisl suscipit adipiscing bibendum est ultricies integer quis</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_view_status">ViewStatusActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+    <string-array name="status_array">
+        <item>Active</item>
+        <item>Inactive</item>
+    </string-array>
+
+
+    <string-array name="questions_array">
+        <item>What was your favorite sport in high school?</item>
+        <item>What is your favorite movie?</item>
+        <item>What is your mother’s maiden name?</item>
+        <item>In what city were you born?</item>
+        <item>In what city or town did your mother and father meet? </item>
+        <item>What year was your mother born?</item>
+        <item>What high school did you attend?</item>
+        <item>What is your favorite number?</item>
+        <item>What high school did you attend?</item>
+        <item>What is your favorite color?</item>
+    </string-array>
+</resources>

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "174459721439",
+    "project_id": "cyclecare-3c113",
+    "storage_bucket": "cyclecare-3c113.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:174459721439:android:3a9f685fbc870fc5a93b6a",
+        "android_client_info": {
+          "package_name": "com.example.cyclecare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "174459721439-e7mi080sd8k1uai87i3d4qb4eq68vj3j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQF6-vFY5cxBo-GcsGaUwQavZx9wNTsfg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "174459721439-e7mi080sd8k1uai87i3d4qb4eq68vj3j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

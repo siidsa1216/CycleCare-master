@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="12dp"
+    app:cardCornerRadius="12dp"
+    android:id="@+id/cardItemCC"
+    android:layout_margin="20dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginRight="10dp"
+            android:weightSum="3">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/bike_image"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:src="@drawable/bike_pic"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:paddingStart="10dp"
+                android:orientation="vertical"
+                android:layout_weight="3">
+
+                <TextView
+                    android:id="@+id/unitNametxt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Unit Name"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/poppins"
+                    android:textSize="18dp"
+                    android:textColor="@color/aquamarine"/>
+
+
+                <TextView
+                    android:id="@+id/statustxt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Available"
+                    android:textStyle="normal"
+                    android:fontFamily="@font/poppins"
+                    android:textSize="12dp"
+                    android:textColor="@color/pastel_green"/>
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/connectBtn"
+                android:layout_width="90dp"
+                android:layout_height="40dp"
+                android:background="@drawable/button_shape"
+                android:fontFamily="@font/poppins"
+                android:text="Connect"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textSize="10sp"/>
+
+        </LinearLayout>
+
+
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
