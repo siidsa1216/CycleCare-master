@@ -21,7 +21,6 @@ public class ConnectCycleCareActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent != null) {
-
             bikeId = intent.getStringExtra("bikeId");
            bikeName = intent.getStringExtra("bikeName");
            desc = intent.getStringExtra("bikeDesc");

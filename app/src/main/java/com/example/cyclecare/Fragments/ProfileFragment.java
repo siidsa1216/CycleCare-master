@@ -50,6 +50,10 @@ public class ProfileFragment extends Fragment {
 
         if (firebaseUser != null) {
             userId = firebaseUser.getUid();
+            showUserProfile();
+        } else {
+            // Handle the case where the user is not signed in
+            // You might want to redirect the user to the sign-in screen or handle it appropriately.
         }
 
         binding.editBtn.setOnClickListener(new View.OnClickListener() {
@@ -78,13 +82,30 @@ public class ProfileFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User users = snapshot.getValue(User.class);
 
-                if (users != null){
+//                if (users != null){
+//
+//                if (users.getProfilePicUrl().equals("")){
+//                    binding.profileImage.setImageResource(R.drawable.logo);
+//               }else{
+//                   Picasso.get().load(users.getProfilePicUrl()).placeholder(R.drawable.logo).into(binding.profileImage);
+//                }
+//
+//                    username = users.getUsername();
+//                    email = users.getEmail();
+//                    phoneNum = users.getPhoneNum();
+//
+//                    binding.userProfileName.setText(username);
+//                    binding.userProfileEmail.setText(email);
+//                    binding.userProfilePhoneNum.setText(phoneNum);
+//
+//                }
 
-                if (users.getProfilePicUrl().equals("")){
-                    binding.profileImage.setImageResource(R.drawable.logo);
-               }else{
-                   Picasso.get().load(users.getProfilePicUrl()).placeholder(R.drawable.logo).into(binding.profileImage);
-                }
+                if (users != null) {
+                    if (users.getProfilePicUrl().equals("")) {
+                        binding.profileImage.setImageResource(R.drawable.logo);
+                    } else {
+                        Picasso.get().load(users.getProfilePicUrl()).placeholder(R.drawable.logo).into(binding.profileImage);
+                    }
 
                     username = users.getUsername();
                     email = users.getEmail();
@@ -93,7 +114,6 @@ public class ProfileFragment extends Fragment {
                     binding.userProfileName.setText(username);
                     binding.userProfileEmail.setText(email);
                     binding.userProfilePhoneNum.setText(phoneNum);
-
                 }
 
                 }

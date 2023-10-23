@@ -92,7 +92,7 @@
         app:layout_constraintTop_toBottomOf="@+id/status" />
 
     <Button
-        android:id="@+id/connectBtn"
+        android:id="@+id/lockBtn"
         android:layout_width="327dp"
         android:layout_height="60dp"
         android:background="@drawable/button_shape"

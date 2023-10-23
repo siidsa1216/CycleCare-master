@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -35,6 +36,10 @@ public class login extends AppCompatActivity {
     Button loginBtn;
     FirebaseAuth mAuth;
     ProgressBar progressBar;
+    private int loginAttempts = 0;
+    private static final int MAX_LOGIN_ATTEMPTS = 3;
+    private static final long COOLDOWN_TIME = 5 * 60 * 1000; // 5 minutes in milliseconds
+    private boolean isCooldownActive = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +58,13 @@ public class login extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (isCooldownActive) {
+                    // Display a message to the user indicating that the account is locked
+                    Toast.makeText(login.this, "Account locked. Try again later.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 progressBar.setVisibility(View.VISIBLE);
 
                 String email, password;
@@ -79,8 +91,9 @@ public class login extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 checkUserRole();
                             } else {
-                                progressBar.setVisibility(View.GONE);
-                                Toast.makeText(login.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+//                                progressBar.setVisibility(View.GONE);
+//                                Toast.makeText(login.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                                handleFailedLogin();
                             }
                         }
                     });
@@ -110,6 +123,30 @@ public class login extends AppCompatActivity {
         });
     }
 
+    private void handleFailedLogin() {
+
+        progressBar.setVisibility(View.GONE);
+        Toast.makeText(login.this, "Login failed.", Toast.LENGTH_SHORT).show();
+
+        loginAttempts++;
+
+        if (loginAttempts >= MAX_LOGIN_ATTEMPTS) {
+            // Lock the account and start the cooldown period
+            isCooldownActive = true;
+            Toast.makeText(login.this, "Too many failed attempts. Account locked for 5 minutes.", Toast.LENGTH_SHORT).show();
+
+            // Schedule a task to reset login attempts and cooldown status after 5 minutes
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    loginAttempts = 0;
+                    isCooldownActive = false;
+                }
+            }, COOLDOWN_TIME);
+        }
+    }
+
+
     private void checkUserRole() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid());
@@ -117,26 +154,14 @@ public class login extends AppCompatActivity {
         userRef.child("usertype").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // Check if the data is a String
                 if (dataSnapshot.getValue() instanceof String) {
                     String userType = dataSnapshot.getValue(String.class);
-
-                    // Debug statement
-                    Log.d("UserRole", "UserType as String: " + userType);
-
-                    // Handle userType (e.g., show a message or log it)
                     handleUserType(userType);
                 } else {
-                    // Assume it's a User object
                     User user = dataSnapshot.getValue(User.class);
-
-                    // Debug statement
-                    Log.d("UserRole", "User Object: " + user);
-
                     if (user != null) {
                         handleUserType(user.getUsertype());
                     } else {
-                        // Handle the case where user object is null
                         progressBar.setVisibility(View.GONE);
                         Toast.makeText(login.this, "User object is null.", Toast.LENGTH_SHORT).show();
                     }
