@@ -11,15 +11,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.example.cyclecare.Adapter.BikeAdapter;
 import com.example.cyclecare.BikeRegActivity;
+import com.example.cyclecare.LoadingDialog;
 import com.example.cyclecare.Model.Bike;
-import com.example.cyclecare.R;
 import com.example.cyclecare.databinding.FragmentBikeProfileBinding;
-import com.example.cyclecare.databinding.FragmentHomeBinding;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -47,7 +46,7 @@ public class BikeProfileFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         bikeList = new ArrayList<>();
-        bikeAdapter = new BikeAdapter(getContext(), bikeList);
+        bikeAdapter = new BikeAdapter(getContext(), bikeList, false);
         recyclerView.setAdapter(bikeAdapter);
 
         readBike();
@@ -64,10 +63,13 @@ public class BikeProfileFragment extends Fragment {
 
 
 
+
+
         return view;
     }
 
     private void readBike() {
+
 
         String profileId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
@@ -81,6 +83,9 @@ public class BikeProfileFragment extends Fragment {
                     Bike bike = dataSnapshot.getValue(Bike.class);
                     bikeList.add(bike);
                 }
+
+                toggleDefaultTextVisibility();
+
                 bikeAdapter.notifyDataSetChanged();
 
             }
@@ -90,5 +95,14 @@ public class BikeProfileFragment extends Fragment {
 
             }
         });
+    }
+
+    private void toggleDefaultTextVisibility() {
+        LinearLayout defaultText = binding.defaultText;
+        if (bikeList.isEmpty()) {
+            defaultText.setVisibility(View.VISIBLE);
+        } else {
+            defaultText.setVisibility(View.GONE);
+        }
     }
 }

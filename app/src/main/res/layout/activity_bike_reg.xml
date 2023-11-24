@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center_vertical"
-    tools:context=".BikeRegActivity">
+    tools:context=".BikeRegActivity"
+    android:id="@+id/bikeRegLayout">
 
 
     <TextView
@@ -24,23 +25,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/editProfileImg"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins"
-        android:text="Add image"
-        android:textAlignment="center"
-        android:textSize="14sp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintTop_toBottomOf="@+id/bike_image" />
+<!--    <TextView-->
+<!--        android:id="@+id/editProfileImg"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:fontFamily="@font/poppins"-->
+<!--        android:text="Add image"-->
+<!--        android:textAlignment="center"-->
+<!--        android:textSize="14sp"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/bike_image" />-->
+
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/bike_image"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="20dp"
         android:src="@drawable/logo"
         app:civ_border_color="@color/pastel_green"
@@ -49,7 +51,6 @@
         app:layout_constraintHorizontal_bias="0.532"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/welcomeBack" />
-
 
     <EditText
         android:id="@+id/bikeNametxt"
@@ -66,7 +67,7 @@
         android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editProfileImg" />
+        app:layout_constraintTop_toBottomOf="@+id/bike_image" />
 
     <EditText
         android:id="@+id/bikeModeltxt"

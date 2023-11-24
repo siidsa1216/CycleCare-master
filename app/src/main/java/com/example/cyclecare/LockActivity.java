@@ -20,7 +20,7 @@ public class LockActivity extends AppCompatActivity {
     public static TextView status;
     ActivityLockBinding binding;
     FirebaseDatabase firebaseDatabase;
-    String cycleCareId, profileId;
+    String parkId, profileId, cycleCareId;
     FirebaseUser firebaseUser;
 
 
@@ -34,10 +34,9 @@ public class LockActivity extends AppCompatActivity {
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         if (firebaseUser != null) {
-           profileId = firebaseUser.getUid();
+            profileId = firebaseUser.getUid();
             // Rest of your code using userId
         } else {
             // Handle the case where the user is not signed in
@@ -46,12 +45,13 @@ public class LockActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent != null) {
+            parkId = intent.getStringExtra("parkId");
             cycleCareId = intent.getStringExtra("cycleCareId");
         }
 
         status = findViewById(R.id.status);
 
-        binding.status.setText(cycleCareId);
+        binding.status.setText("UNLOCKED");
         binding.lockBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,20 +62,21 @@ public class LockActivity extends AppCompatActivity {
     }
 
     private void activateLock() {
-            boolean locked = true;
+        boolean locked = true;
 
-            DatabaseReference databaseReference = firebaseDatabase.getReference("Park");
+        DatabaseReference databaseReference = firebaseDatabase.getReference("Park");
 
-            databaseReference.child(cycleCareId).child("status").setValue(locked)
-                    .addOnSuccessListener(aVoid -> {
-                        Toast.makeText(this, "Locked activated, wait for the locking mechanism to stop before leaving your bike.", Toast.LENGTH_LONG).show();
+        databaseReference.child(firebaseUser.getUid()).child(parkId).child("status").setValue(locked)
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(this, "Locked activated, wait for the locking mechanism to stop before leaving your bike.", Toast.LENGTH_LONG).show();
 
-                        startActivity(new Intent(this, ViewStatusActivity.class));
-                    })
-                    .addOnFailureListener(e -> {
-                        // Handle any errors that occurred during the save process
-                        // For example, show an error message
-                        Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    });
+                    startActivity(new Intent(this, ViewStatusActivity.class));
+                    finish();
+                })
+                .addOnFailureListener(e -> {
+                    // Handle any errors that occurred during the save process
+                    // For example, show an error message
+                    Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
     }
 }

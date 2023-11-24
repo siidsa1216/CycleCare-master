@@ -71,16 +71,10 @@
            </LinearLayout>
 
            <Button
-               android:id="@+id/parkBtn"
-               android:layout_width="80dp"
-               android:layout_height="35dp"
-               android:background="@drawable/button_shape"
-               android:fontFamily="@font/poppins"
-               android:text="Park"
-               android:layout_gravity="center"
-               android:textAlignment="center"
-               android:textAllCaps="false"
-               android:textSize="10sp"/>
+               android:id="@+id/moreOption"
+               android:layout_width="24dp"
+               android:layout_height="24dp"
+               android:background="@drawable/ic_baseline_more_horiz_24" />
 
        </LinearLayout>
 

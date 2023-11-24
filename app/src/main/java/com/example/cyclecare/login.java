@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +20,7 @@ import com.example.cyclecare.Admin.AdminMainActivity;
 import com.example.cyclecare.Model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,14 +34,11 @@ public class login extends AppCompatActivity {
 
     ImageView backBtn;
     TextView noAccount, forgotPass;
-    EditText emailtxt, passwordtxt;
+    TextInputEditText emailtxt, passwordtxt;
     Button loginBtn;
     FirebaseAuth mAuth;
     ProgressBar progressBar;
-    private int loginAttempts = 0;
-    private static final int MAX_LOGIN_ATTEMPTS = 3;
-    private static final long COOLDOWN_TIME = 5 * 60 * 1000; // 5 minutes in milliseconds
-    private boolean isCooldownActive = false;
+    LoadingDialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,50 +53,53 @@ public class login extends AppCompatActivity {
         passwordtxt = findViewById(R.id.passwordtxt);
         progressBar = findViewById(R.id.progressBar);
         forgotPass = findViewById(R.id.forgotPass);
+        loadingDialog = new LoadingDialog(login.this);
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (isCooldownActive) {
-                    // Display a message to the user indicating that the account is locked
-                    Toast.makeText(login.this, "Account locked. Try again later.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                progressBar.setVisibility(View.VISIBLE);
 
                 String email, password;
                 email = String.valueOf(emailtxt.getText());
                 password = String.valueOf(passwordtxt.getText());
 
                 if (email.isEmpty()) {
-                    progressBar.setVisibility(View.GONE);
                     emailtxt.setError("Field is required");
                     emailtxt.requestFocus();
                     return;
                 }
 
+                if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+                    emailtxt.setError("Please provide a valid email");
+                    emailtxt.requestFocus();
+                    return;
+                }
+
                 if (password.isEmpty()) {
-                    progressBar.setVisibility(View.GONE);
                     passwordtxt.setError("Field is required");
                     passwordtxt.requestFocus();
                     return;
-                } else {
+
+                }
+
+                loadingDialog.startLoadingActivity();
+
                     mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-
                             if (task.isSuccessful()) {
+
                                 checkUserRole();
+
+
                             } else {
-//                                progressBar.setVisibility(View.GONE);
-//                                Toast.makeText(login.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-                                handleFailedLogin();
+                                //
+                                Toast.makeText(login.this, "Signup failed. Please try again.", Toast.LENGTH_SHORT).show();
+                                loadingDialog.dismissDialog();
                             }
                         }
                     });
-                }
+
             }
         });
 
@@ -122,30 +124,6 @@ public class login extends AppCompatActivity {
             }
         });
     }
-
-    private void handleFailedLogin() {
-
-        progressBar.setVisibility(View.GONE);
-        Toast.makeText(login.this, "Login failed.", Toast.LENGTH_SHORT).show();
-
-        loginAttempts++;
-
-        if (loginAttempts >= MAX_LOGIN_ATTEMPTS) {
-            // Lock the account and start the cooldown period
-            isCooldownActive = true;
-            Toast.makeText(login.this, "Too many failed attempts. Account locked for 5 minutes.", Toast.LENGTH_SHORT).show();
-
-            // Schedule a task to reset login attempts and cooldown status after 5 minutes
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    loginAttempts = 0;
-                    isCooldownActive = false;
-                }
-            }, COOLDOWN_TIME);
-        }
-    }
-
 
     private void checkUserRole() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -174,19 +152,19 @@ public class login extends AppCompatActivity {
                 Toast.makeText(login.this, "Failed to fetch user data.", Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 
     private void handleUserType(String userType) {
+
         if ("admin".equals(userType)) {
             // Redirect to admin panel
             startActivity(new Intent(getApplicationContext(), AdminMainActivity.class));
         } else {
-            // Redirect to main activity
+            Toast.makeText(login.this, "Signup successful.", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
         }
 
-        finish();
-    }
-
+        finish();    }
 
 }

@@ -42,14 +42,47 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/defaultText"
+        android:visibility="invisible"
+        android:layout_marginTop="240dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="120dp"
+            android:background="@drawable/bike_svg"
+            android:layout_gravity="center_horizontal"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="You currently don't have a registered bike in your account."
+            android:textSize="14sp"
+            android:visibility="visible"
+            android:layout_marginHorizontal="80dp"
+            android:fontFamily="@font/poppins"
+            android:textAlignment="center"
+            android:layout_marginTop="10dp"
+            />
+
+    </LinearLayout>
+
+
+    <!-- Plus Button -->
+
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewBikes"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/recyclerViewBikes"
-        android:layout_marginTop="140dp"/>
+        android:layout_marginTop="140dp" />
 
-
-   <!-- Plus Button -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addBike"
         android:layout_width="wrap_content"

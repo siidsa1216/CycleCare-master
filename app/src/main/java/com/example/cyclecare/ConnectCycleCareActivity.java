@@ -19,18 +19,7 @@ public class ConnectCycleCareActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        Intent intent = getIntent();
-        if (intent != null) {
-            bikeId = intent.getStringExtra("bikeId");
-           bikeName = intent.getStringExtra("bikeName");
-           desc = intent.getStringExtra("bikeDesc");
-           bikeImg = intent.getStringExtra("itemPhotoUrl"); ///laterrr
-
-            binding.bikeName.setText(bikeName);
-            binding.bikeDesc.setText(desc);
-        }
-
-            binding.backBtn.setOnClickListener(new View.OnClickListener() {
+        binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //code

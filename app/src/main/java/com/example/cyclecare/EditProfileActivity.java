@@ -1,11 +1,14 @@
 package com.example.cyclecare;
 
+import static android.content.ContentValues.TAG;
+
 import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
@@ -63,6 +66,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
                 binding.txtusername.setText(user.getUsername());
                 binding.txtphoneNum.setText(user.getPhoneNum());
+                binding.txtuseremail.setText(user.getEmail());
 
                 if (user.getProfilePicUrl().equals("")){
                     binding.profileImage.setImageResource(R.drawable.logo);
@@ -74,10 +78,20 @@ public class EditProfileActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Log.d(TAG, "onFailure: Email not sent");
             }
         });
 
+        binding.profileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (checkPermissions()) {
+                    openImagePicker();
+                } else {
+                    requestPermissions();
+                }
+            }
+        });
 
         binding.editProfileImg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,8 +160,6 @@ public class EditProfileActivity extends AppCompatActivity {
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
     }
-
-    // ... Your existing code ...
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

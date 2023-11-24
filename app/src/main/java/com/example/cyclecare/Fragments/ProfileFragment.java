@@ -50,7 +50,6 @@ public class ProfileFragment extends Fragment {
 
         if (firebaseUser != null) {
             userId = firebaseUser.getUid();
-            showUserProfile();
         } else {
             // Handle the case where the user is not signed in
             // You might want to redirect the user to the sign-in screen or handle it appropriately.

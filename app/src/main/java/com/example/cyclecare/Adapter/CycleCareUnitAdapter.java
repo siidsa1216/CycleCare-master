@@ -54,7 +54,7 @@ public class CycleCareUnitAdapter extends RecyclerView.Adapter<CycleCareUnitAdap
 
                 // Open a new activity and pass the data
                 Intent intent = new Intent(v.getContext(), QRActivity.class);
-                intent.putExtra("cyclecareId", cycleCareId);
+                intent.putExtra("cycleCareId", cycleCareId);
                 v.getContext().startActivity(intent);
 
 //                //direct to connect to cyclecare activity

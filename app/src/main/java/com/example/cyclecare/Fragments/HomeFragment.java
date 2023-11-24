@@ -1,29 +1,30 @@
 package com.example.cyclecare.Fragments;
 
-import android.content.Intent;
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.cyclecare.GetStarted;
+import com.example.cyclecare.Adapter.ParkAdapter;
 import com.example.cyclecare.HomeViewPager;
+import com.example.cyclecare.Model.Park;
 import com.example.cyclecare.Model.User;
 import com.example.cyclecare.R;
-import com.example.cyclecare.ViewPagerAdapter;
 import com.example.cyclecare.databinding.FragmentHomeBinding;
-import com.example.cyclecare.databinding.FragmentProfileBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -32,6 +33,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomeFragment extends Fragment {
 
@@ -43,6 +47,11 @@ public class HomeFragment extends Fragment {
     String userId;
     private String username;
 
+    List<Park> parkList;
+    RecyclerView recyclerView;
+    ParkAdapter parkAdapter;
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -50,11 +59,21 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
+
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         if (firebaseUser != null) {
             userId = firebaseUser.getUid();
         }
 
+        recyclerView = binding.recyclerViewPark;
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        parkList = new ArrayList<>();
+        parkAdapter = new ParkAdapter(getContext(), parkList);
+        recyclerView.setAdapter(parkAdapter);
+
+        readPark();
 
         slideViewPager =(ViewPager) binding.sliderViewPages;
         indicatorLayout = (LinearLayout) binding.indicator;
@@ -73,6 +92,43 @@ public class HomeFragment extends Fragment {
 
         return view;
     }
+
+
+    private void readPark() {
+
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Park");
+
+        reference.child(userId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                parkList.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Park park = dataSnapshot.getValue(Park.class);
+                    parkList.add(park);
+                }
+
+                toggleDefaultTextVisibility();
+
+                parkAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle error
+            }
+        });
+    }
+
+    private void toggleDefaultTextVisibility() {
+        LinearLayout defaultText = binding.defaultText;
+        if (parkList.isEmpty()) {
+            defaultText.setVisibility(View.VISIBLE);
+        } else {
+            defaultText.setVisibility(View.GONE);
+        }
+    }
+
 
     private void showUserProfile() {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
@@ -95,7 +151,6 @@ public class HomeFragment extends Fragment {
                 }
 
             }
-
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {

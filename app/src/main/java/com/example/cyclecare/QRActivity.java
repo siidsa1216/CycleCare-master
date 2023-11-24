@@ -1,15 +1,22 @@
 package com.example.cyclecare;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
-import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.icu.util.Calendar;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.cyclecare.databinding.ActivityQractivityBinding;
@@ -31,8 +38,9 @@ public class QRActivity extends AppCompatActivity {
     FirebaseDatabase firebaseDatabase;
     FirebaseUser firebaseUser;
     FirebaseStorage firebaseStorage;
-    DatabaseReference databaseReference;
-    String bikeId, bikeName, profileId, cycleCareId;
+    String bikeId, bikeName, profileId, cycleCareId, parkId;
+    String retrievedBikeId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +51,19 @@ public class QRActivity extends AppCompatActivity {
 
         firebaseDatabase = FirebaseDatabase.getInstance();  // Initialize FirebaseDatabase
         firebaseStorage = FirebaseStorage.getInstance();
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        // Retrieve bikeId from SharedPreferences
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        retrievedBikeId = sharedPreferences.getString("bikeId", "");
+
+        // Check if retrievedBikeId is not null or empty before using it
+        if (retrievedBikeId != null && !retrievedBikeId.isEmpty()) {
+            // BikeId is available, you can use it here
+            // Example: display it in a TextView
+        } else {
+            // Handle the case where retrievedBikeId is null or empty
+            Toast.makeText(this, "Bike ID not found", Toast.LENGTH_SHORT).show();
+        }
 
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -59,45 +79,65 @@ public class QRActivity extends AppCompatActivity {
         if (intent != null) {
             bikeId = intent.getStringExtra("bikeId");
             bikeName = intent.getStringExtra("bikeName");
-            cycleCareId = intent.getStringExtra("cyclecareId");
+            cycleCareId = intent.getStringExtra("cycleCareId");
         }
-
 
         binding.generateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 parkYourBike();
+            }
+        });
+    }
 
+    private void showSuccessDialog(Bitmap qrCodeBitmap) {
+        ConstraintLayout successConstraintLayout = findViewById(R.id.successConstraintLayout);
+        View view = LayoutInflater.from(QRActivity.this).inflate(R.layout.success_dialog, successConstraintLayout);
 
-                startActivity(new Intent(QRActivity.this, LockActivity.class));
-                finish();
+        // Use the inflated view to find the button
+        Button successDone = view.findViewById(R.id.successDone);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(QRActivity.this);
+        builder.setView(view);
+        final AlertDialog alertDialog = builder.create();
+
+        successDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+                Intent intent = new Intent(QRActivity.this, ScanActivity.class);
+                intent.putExtra("parkId", parkId);
+                intent.putExtra("cycleCareId", cycleCareId);
+                startActivity(intent);
             }
         });
 
-
-
+        if (alertDialog.getWindow() != null) {
+            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        }
+        alertDialog.show();
     }
 
     private void parkYourBike() {
-        // Create a timestamp
         long timestamp = System.currentTimeMillis();
         String dateTime = TimeStamp.convertTimestampToDateTime(timestamp);
         long timeEnd = addNineHoursToTimestamp(timestamp);
         String endTime = TimeStamp.convertTimestampToDateTime(timeEnd);
         boolean status = false;
 
-        // Display or save the readable date and tim
-//        Log.d("Timestamp", "Readable Date and Time: " + dateTime);
-//        Log.d("Timestamp", "End Time (after adding 9 hours): " + endTime);
-        DatabaseReference parkRef = firebaseDatabase.getInstance().getReference("Park");
-        // Generate a unique key for the new bike entry
-        String parkId = parkRef.push().getKey();
+        DatabaseReference parkRef = FirebaseDatabase.getInstance().getReference("Park");
+        parkId = parkRef.push().getKey(); // Save parkId globally
+
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("parkId", parkId);
+        editor.apply();
 
         // Create a HashMap to store parking information
         HashMap<String, Object> parkMap = new HashMap<>();
         parkMap.put("parkId", parkId);
-        parkMap.put("cyclecareId", cycleCareId);
-        parkMap.put("bikeId", bikeId);
+        parkMap.put("bikeId", retrievedBikeId);
+        parkMap.put("cycleCareId", cycleCareId);
         parkMap.put("userId", profileId);
         parkMap.put("QRCodeURL", "");
         parkMap.put("timeEnd", endTime);
@@ -105,33 +145,15 @@ public class QRActivity extends AppCompatActivity {
         parkMap.put("status", status);
 
 
-        // Save the bike information to the database
-        parkRef.child(cycleCareId).setValue(parkMap)
-                .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
-                    Bitmap qrCodeBitmap = generateQR(parkId);
-                    startNextActivity(qrCodeBitmap);
-                })
-                .addOnFailureListener(e -> {
-                    // Handle any errors that occurred during the save process
-                    // For example, show an error message
-                });
-
-        generateQR(parkId);
+        parkRef.child(firebaseUser.getUid()).child(parkId).setValue(parkMap).addOnSuccessListener(aVoid -> {
+            Bitmap qrCodeBitmap = generateQR(profileId);
+            showSuccessDialog(qrCodeBitmap);
+        }).addOnFailureListener(e -> {
+            // Handle any errors that occurred during the save process
+            // For example, show an error message
+            Toast.makeText(this, "Unsuccessful", Toast.LENGTH_SHORT).show();
+        });
     }
-
-    private void startNextActivity(Bitmap qrCodeBitmap) {
-        Intent intent = new Intent(this, LockActivity.class);
-        intent.putExtra("qrCodeBitmap", qrCodeBitmap);
-        intent.putExtra("cycleCareId", cycleCareId);
-        startActivity(intent);
-//        // In the first activity
-//        Intent intent1 = new Intent(this, LockActivity.class);
-//        intent.putExtra("cycleCareId", cycleCareId);
-//        startActivity(intent1);
-        finish();
-    }
-
 
     private long addNineHoursToTimestamp(long timestamp) {
         // Create a Calendar object and set its time to the timestamp
@@ -145,25 +167,21 @@ public class QRActivity extends AppCompatActivity {
         return calendar.getTimeInMillis();
     }
 
-
-    private Bitmap generateQR(String parkId) {
-
-        String data = parkId;
+    private Bitmap generateQR(String userId) {
         // Adjust width and height as needed
         int width = 500;
         int height = 500;
 
-        Bitmap qrCodeBitmap = QRcodeGenerator.generateQRCode(data, width, height);
+        Bitmap qrCodeBitmap = QRcodeGenerator.generateQRCode(userId, width, height);
 
         if (qrCodeBitmap != null) {
-//            binding.displayQR.setImageBitmap(qrCodeBitmap);
-            saveQRCodeToStorage(qrCodeBitmap, parkId);
+            saveQRCodeToStorage(qrCodeBitmap);
         }
 
-        return null;
+        return qrCodeBitmap;
     }
-//
-    private void saveQRCodeToStorage(Bitmap qrCodeBitmap, String parkId) {
+
+    private void saveQRCodeToStorage(Bitmap qrCodeBitmap) {
         StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("qr_codes/" + parkId + "/qr_code_image.png");
 
         // Convert bitmap to byte array
@@ -184,7 +202,7 @@ public class QRActivity extends AppCompatActivity {
                 String url = downloadUri.toString();
 
                 DatabaseReference parkRef = firebaseDatabase.getInstance().getReference("Park");
-                parkRef.child(cycleCareId).child("QRCodeURL").setValue(url);
+                parkRef.child(firebaseUser.getUid()).child(parkId).child("QRCodeURL").setValue(url);
             } else {
                 // Handle errors here
                 Exception e = task.getException();
@@ -192,53 +210,4 @@ public class QRActivity extends AppCompatActivity {
             }
         });
     }
-
-
-//    private void firebaseUploadBitmap(Bitmap bitmap, String parkId) {
-//
-//        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-//        byte[] data = stream.toByteArray();
-//
-//        StorageReference imageStorage = firebaseStorage.getReference();
-//        StorageReference imageRef = imageStorage.child("images/" + "imageName");
-//
-//        Task<Uri> urlTask = imageRef.putBytes(data).continueWithTask(task -> {
-//            if (!task.isSuccessful()) {
-//                throw task.getException();
-//            }
-//
-//            // Continue with the task to get the download URL
-//            return imageRef.getDownloadUrl();
-//        }).addOnCompleteListener(task -> {
-//            if (task.isSuccessful()) {
-//                Uri downloadUri = task.getResult();
-//                String uri = downloadUri.toString();
-//                sendMessageWithFile(uri);
-//            } else {
-//                // Handle failures
-//                // ...
-//            }
-//           // progressBar.setVisibility(View.GONE);
-//        });
-//
-//    }
-//
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == PICK_IMAGE && resultCode == Activity.RESULT_OK) {
-//            //      Bitmap imageBitmap = data.getData() ;
-//            Bitmap photo = (Bitmap) data.getExtras().get("data");
-//            if (photo != null)
-//                firebaseUploadBitmap(photo);
-//
-//        } else if (requestCode == SELECT_IMAGE && resultCode == Activity.RESULT_OK) {
-//
-//            Uri uri = data.getData();
-//            if (uri != null)
-//                firebaseUploadImage(uri);
-//        }
-//
-//    }
 }

@@ -13,24 +13,36 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class GetStarted extends AppCompatActivity {
 
     ViewPager slideViewPager;
     LinearLayout indicatorLayout;
     TextView skipBtn;
     Button getStarted;
-
     TextView[] dots;
     ViewPagerAdapter viewPagerAdapter;
     Animation animation;
+    FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.getstarted);
 
+        mAuth = FirebaseAuth.getInstance();
+
+        //check if the user is already signed in
+        if (mAuth.getCurrentUser() != null){
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            finish();
+        }
+
+
         skipBtn = findViewById(R.id.skipBtn);
         getStarted = findViewById(R.id.getStartedBtn);
+
 
         getStarted.setOnClickListener(new View.OnClickListener() {
             @Override

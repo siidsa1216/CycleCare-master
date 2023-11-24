@@ -9,9 +9,9 @@
 
     //Description
 
-    <string name="description1">CycleCare is your ultimate companion for securely parking your bike and ensuring peace of mind.</string>
-    <string name="description2">sit amet est placerat in egestas erat imperdiet sed euismod nisi porta lorem mollis aliquam</string>
-    <string name="description3">dui id ornare arcu odio ut sem nulla pharetra diam sit amet nisl suscipit adipiscing bibendum est ultricies integer quis</string>
+    <string name="description1">CycleCare is your ultimate companion for securely parking your bike and ensuring peace of mind while parking.</string>
+    <string name="description2">CycleCare supports QR code enabling seamless identification and facilitating efficient bike parking services.</string>
+    <string name="description3">CycleCare has locking mechanism that secures bicycles, ensuring protection against unauthorized access.</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_view_status">ViewStatusActivity</string>

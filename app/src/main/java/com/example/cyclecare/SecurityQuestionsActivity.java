@@ -1,8 +1,13 @@
 package com.example.cyclecare;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.app.AlertDialog;
+import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -108,7 +113,7 @@ public class SecurityQuestionsActivity extends AppCompatActivity {
             // Save the bike information to the database
             quesRef.child(quesId).setValue(answersMap)
                     .addOnSuccessListener(aVoid -> {
-                        Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
+                        showSuccessDialog();
                     })
                     .addOnFailureListener(e -> {
                         // Handle any errors that occurred during the save process
@@ -116,6 +121,33 @@ public class SecurityQuestionsActivity extends AppCompatActivity {
                     });
 
     }
+    }
+
+    private void showSuccessDialog() {
+
+        ConstraintLayout successConstraintLayout = findViewById(R.id.successConstraintLayout);
+        View view = LayoutInflater.from(SecurityQuestionsActivity.this).inflate(R.layout.success_dialog, successConstraintLayout);
+
+        // Use the inflated view to find the button
+        Button successDone = view.findViewById(R.id.successDone);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(SecurityQuestionsActivity.this);
+        builder.setView(view);
+        final AlertDialog alertDialog = builder.create();
+
+        successDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+                startActivity(new Intent(SecurityQuestionsActivity.this, login.class));
+                finish();
+            }
+        });
+
+        if (alertDialog.getWindow() != null){
+            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        }
+        alertDialog.show();
     }
 
     private class SpinnerItemSelected implements AdapterView.OnItemSelectedListener {

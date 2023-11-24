@@ -1,5 +1,6 @@
 package com.example.cyclecare.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,11 +11,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.example.cyclecare.Adapter.BikeAdapter;
+import com.example.cyclecare.BikeRegActivity;
 import com.example.cyclecare.Model.Bike;
-import com.example.cyclecare.R;
-import com.example.cyclecare.databinding.FragmentBikeProfileBinding;
 import com.example.cyclecare.databinding.FragmentParkBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -43,7 +44,7 @@ public class ParkFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentParkBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
-        
+
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         if (firebaseUser != null) {
@@ -58,10 +59,17 @@ public class ParkFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         bikeList = new ArrayList<>();
-        bikeAdapter = new BikeAdapter(getContext(), bikeList);
+        bikeAdapter = new BikeAdapter(getContext(), bikeList, true);
         recyclerView.setAdapter(bikeAdapter);
 
         readBike();
+
+        binding.addBikeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), BikeRegActivity.class));
+            }
+        });
 
         return view;
     }
@@ -77,6 +85,9 @@ public class ParkFragment extends Fragment {
                     Bike bike = dataSnapshot.getValue(Bike.class);
                     bikeList.add(bike);
                 }
+
+                toggleDefaultTextVisibility();
+
                 bikeAdapter.notifyDataSetChanged();
 
             }
@@ -86,5 +97,14 @@ public class ParkFragment extends Fragment {
 
             }
         });
+    }
+
+    private void toggleDefaultTextVisibility() {
+        LinearLayout defaultText = binding.defaultText;
+        if (bikeList.isEmpty()) {
+            defaultText.setVisibility(View.VISIBLE);
+        } else {
+            defaultText.setVisibility(View.GONE);
+        }
     }
 }

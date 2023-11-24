@@ -17,31 +17,31 @@ import org.w3c.dom.Text;
 public class ScanActivity extends AppCompatActivity {
 
     ActivityScanBinding binding;
-    public static TextView textView;
+    String cycleCareId, parkId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding =   ActivityScanBinding.inflate(getLayoutInflater());
+        binding = ActivityScanBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
 
+        Intent intent = getIntent();
+        if (intent != null) {
+            parkId = intent.getStringExtra("parkId");
+            cycleCareId = intent.getStringExtra("cycleCareId");
+        }
 
-        textView = findViewById(R.id.text2);
-        // Inside your ScanActivity
-//        Intent intent = getIntent();
-//        if (intent.hasExtra("qrCodeBitmap")) {
-//            Bitmap qrCodeBitmap = intent.getParcelableExtra("qrCodeBitmap");
-//            Log.d("ScanActivity", "Got QR Code Bitmap from intent");
-//            binding.qrView.setImageBitmap(qrCodeBitmap);
-//        } else {
-//            Log.e("ScanActivity", "Intent does not have QR Code Bitmap extra");
-//        }
 
         binding.scanBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), ScanningQRActivity.class));
+                // Handle the QR code scanning logic
+                // Assuming you have a ScanningQRActivity for scanning QR codes
+                Intent intent = new Intent(ScanActivity.this, ScanningQRActivity.class);
+                intent.putExtra("parkId", parkId);
+                intent.putExtra("cycleCareId", cycleCareId);
+                startActivity(intent);
             }
         });
     }

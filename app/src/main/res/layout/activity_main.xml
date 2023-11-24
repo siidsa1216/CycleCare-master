@@ -8,27 +8,89 @@
     android:id="@+id/fragment_container"
     tools:context=".MainActivity">
 
+
     <FrameLayout
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:flow_horizontalBias="0.5"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"/>
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardsendverication"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardElevation="12dp"
+            android:layout_margin="30dp"
+            app:cardCornerRadius="10dp"
+            android:layout_gravity="center"
+            android:visibility="invisible">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/email_svg"
+                android:layout_gravity="center_horizontal" />
+
+            <TextView
+                android:id="@+id/sendVerificationtxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Email not Verified"
+                android:textAlignment="center"
+                android:textColor="@color/aquamarine"
+                android:textSize="20sp"
+                android:layout_marginTop="130dp"
+                android:visibility="invisible"/>
+
+            <Button
+                android:id="@+id/sendVerification"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Verify Email"
+                android:layout_marginTop="160dp"
+                android:layout_marginBottom="20dp"
+                android:layout_gravity="center_horizontal"
+                android:visibility="invisible"/>
+
+        </androidx.cardview.widget.CardView>
+
+
+    </FrameLayout>
+
+
+    <com.etebarian.meowbottomnavigation.MeowBottomNavigation
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:background="@color/pastel_green"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/frameLayout"
-        app:menu="@menu/bottom_nav"
-        app:itemTextColor="@color/white"
-        app:itemIconTint="@color/white"
-        app:itemTextAppearanceActive="@style/BottomNavigationViewTextStyle"
-        app:itemTextAppearanceInactive="@style/BottomNavigationViewTextStyle"/>
+        app:mbn_backgroundBottomColor="@color/pastel_green"
+        app:mbn_circleColor="@color/pastel_green"
+        app:mbn_defaultIconColor="@color/white"
+        app:mbn_selectedIconColor="@color/white"
+
+        />
+
+
+<!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->
+<!--        android:id="@+id/bottomNavigationView"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="70dp"-->
+<!--        android:background="@color/pastel_green"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/frameLayout"-->
+<!--        app:menu="@menu/bottom_nav"-->
+<!--        app:itemTextColor="@color/white"-->
+<!--        app:itemIconTint="@color/white"-->
+<!--        app:itemTextAppearanceActive="@style/BottomNavigationViewTextStyle"-->
+<!--        app:itemTextAppearanceInactive="@style/BottomNavigationViewTextStyle"/>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -52,16 +52,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="168dp"
-        android:background="@drawable/unlock_icon"
+        android:background="@drawable/lock_img"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <Button
-        android:id="@+id/connectBtn"
+        android:id="@+id/statusBtn"
         android:layout_width="327dp"
         android:layout_height="60dp"
-        android:layout_marginBottom="212dp"
+        android:layout_marginTop="60dp"
         android:background="@drawable/button_shape"
         android:fontFamily="@font/poppins"
         android:text="View Status"
@@ -69,9 +69,9 @@
         android:textAllCaps="false"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:gravity="center_horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.38"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/unlockImg"
         app:layout_constraintVertical_bias="0.0" />

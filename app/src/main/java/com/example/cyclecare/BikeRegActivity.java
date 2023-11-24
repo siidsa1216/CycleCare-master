@@ -1,11 +1,23 @@
 package com.example.cyclecare;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import android.app.AlertDialog;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.cyclecare.Fragments.BikeProfileFragment;
 import com.example.cyclecare.databinding.ActivityBikeRegBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -35,8 +47,6 @@ public class BikeRegActivity extends AppCompatActivity {
             // Handle the case where the user is not signed in
             // You might want to redirect the user to the sign-in screen or handle it appropriately.
         }
-
-
 
         binding.regBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,12 +109,38 @@ public class BikeRegActivity extends AppCompatActivity {
         // Save the bike information to the database
         bikesRef.child(bikeId).setValue(bikeMap)
                 .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
+                   successDialog();
                 })
                 .addOnFailureListener(e -> {
                     // Handle any errors that occurred during the save process
                     // For example, show an error message
                 });
     }
+
+    private void successDialog() {
+            ConstraintLayout successConstraintLayout = findViewById(R.id.regCompletedConstraintLayout);
+            View view = LayoutInflater.from(BikeRegActivity.this).inflate(R.layout.regcompletedialog, successConstraintLayout);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(BikeRegActivity.this);
+            builder.setView(view);
+            final AlertDialog alertDialog = builder.create();
+
+            if (alertDialog.getWindow() != null) {
+                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+            }
+            alertDialog.show();
+
+        // Use Handler to delay the dismissal of the dialog
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                alertDialog.dismiss();
+
+                startActivity(new Intent(BikeRegActivity.this, MainActivity.class));
+                finish();
+            }
+        }, 3000); // 3000 milliseconds (3 seconds)
+        }
+
 
 }
