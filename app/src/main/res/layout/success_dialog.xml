@@ -4,73 +4,69 @@
     android:layout_width="300dp"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/successConstraintLayout">
-    
+    android:id="@+id/successConstraintLayout"
+    android:layout_gravity="center_horizontal">
+
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutDialog"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:id="@+id/layoutDialog"
         android:background="@drawable/success_dialog_bg"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
-        
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="20dp">
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/qrsuccess"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
+            android:id="@+id/successTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/successTitle"
+            android:gravity="center_horizontal"
             android:text="Success"
             android:textColor="@color/aquamarine"
             android:textSize="20dp"
-            android:paddingTop="28dp"
-            android:gravity="center_horizontal"
             android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="@+id/layoutDialog"/>
+            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
         <TextView
+            android:id="@+id/successDesc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/successDesc"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="20dp"
+            android:gravity="center_horizontal"
             android:text="Your QR code has been generated."
             android:textColor="@color/aquamarine"
-            android:textSize="12dp"
-            android:paddingTop="38dp"
-            android:gravity="center_horizontal"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginStart="20dp"
-            app:layout_constraintTop_toBottomOf="@+id/successTitle"
+            android:textSize="14dp"
             app:layout_constraintBottom_toTopOf="@+id/successDone"
-            app:layout_constraintTop_toTopOf="@+id/layoutDialog"/>
-        
-        
+            app:layout_constraintTop_toBottomOf="@+id/successTitle"
+            app:layout_constraintTop_toTopOf="@+id/successTitle" />
+
+
         <Button
+            android:id="@+id/successDone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/successDone"
-            android:text="Done"
-            android:textSize="12dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginEnd="40dp"
-            android:layout_marginStart="40dp"
+            android:layout_marginTop="10dp"
             android:backgroundTint="@color/aquamarine"
-            app:layout_constraintStart_toStartOf="parent"
+            android:text="Proceed"
+            android:textSize="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/successDesc"
-            />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/successDesc" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:id="@+id/successImage"
-        android:src="@drawable/success_icon"
-        android:layout_marginEnd="40dp"
-        android:layout_marginStart="40dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/layoutDialog"
-        app:layout_constraintBottom_toTopOf="@+id/layoutDialog"
-        />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -24,22 +24,32 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
+
     <string-array name="status_array">
         <item>Active</item>
         <item>Inactive</item>
     </string-array>
 
 
-    <string-array name="questions_array">
+    <string-array name="questions_array1">
         <item>What was your favorite sport in high school?</item>
         <item>What is your favorite movie?</item>
         <item>What is your mother’s maiden name?</item>
+    </string-array>
+
+    <string-array name="questions_array2">
         <item>In what city were you born?</item>
         <item>In what city or town did your mother and father meet? </item>
         <item>What year was your mother born?</item>
-        <item>What high school did you attend?</item>
+    </string-array>
+
+    <string-array name="questions_array3">
         <item>What is your favorite number?</item>
         <item>What high school did you attend?</item>
         <item>What is your favorite color?</item>
     </string-array>
+
+    <!-- res/values/strings.xml -->
+    <string name="msg_token_fmt">Token: %1$s</string>
+
 </resources>

@@ -1,12 +1,12 @@
 package com.example.cyclecare.Model;
 
 public class CycleCare {
-    String unitID, unitName, unitNumber, unitLocation, receiverName, dateReceived, installerName, dateInstalled;
+    String unitID, unitName, unitNumber, unitLocation, receiverName, dateReceived, installerName, dateInstalled, status;
 
     public CycleCare() {
     }
 
-    public CycleCare(String unitID, String unitName, String unitNumber, String unitLocation, String receiverName, String dateReceived, String installerName, String dateInstalled) {
+    public CycleCare(String unitID, String unitName, String unitNumber, String unitLocation, String receiverName, String dateReceived, String installerName, String dateInstalled, String status) {
         this.unitID = unitID;
         this.unitName = unitName;
         this.unitNumber = unitNumber;
@@ -15,6 +15,7 @@ public class CycleCare {
         this.dateReceived = dateReceived;
         this.installerName = installerName;
         this.dateInstalled = dateInstalled;
+        this.status = status;
     }
 
     public String getUnitID() {
@@ -79,5 +80,13 @@ public class CycleCare {
 
     public void setDateInstalled(String dateInstalled) {
         this.dateInstalled = dateInstalled;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

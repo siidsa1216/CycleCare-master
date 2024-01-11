@@ -2,13 +2,21 @@ package com.example.cyclecare.Model;
 
 public class User {
 
-    private String username, email, phoneNum, password, profilePicUrl, usertype, status;
+    private String username, email, phoneNum, password, profilePicUrl, usertype, status, fcmToken;
 
     public User(){
 
     }
 
-    public User(String username, String email, String phoneNum, String password, String profilePicUrl, String usertype, String status) {
+    public String getFcmToken() {
+        return fcmToken;
+    }
+
+    public void setFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
+    }
+
+    public User(String username, String email, String phoneNum, String password, String profilePicUrl, String usertype, String status, String fcmToken) {
         this.username = username;
         this.email = email;
         this.phoneNum = phoneNum;
@@ -16,7 +24,9 @@ public class User {
         this.profilePicUrl = profilePicUrl;
         this.usertype = usertype;
         this.status = status;
+        this.fcmToken= fcmToken;
     }
+
 
     public String getUsername() {
         return username;
@@ -73,4 +83,6 @@ public class User {
     public void setStatus(String status) {
         this.status = status;
     }
+
+
 }

@@ -17,7 +17,7 @@ import org.w3c.dom.Text;
 public class ScanActivity extends AppCompatActivity {
 
     ActivityScanBinding binding;
-    String cycleCareId, parkId;
+    String cycleCareId, parkId, bikeId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,10 +28,19 @@ public class ScanActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent != null) {
+            bikeId = intent.getStringExtra("bikeId");
             parkId = intent.getStringExtra("parkId");
             cycleCareId = intent.getStringExtra("cycleCareId");
         }
 
+
+        binding.backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ScanActivity.this, QRActivity.class));
+                finish();
+            }
+        });
 
         binding.scanBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,6 +48,7 @@ public class ScanActivity extends AppCompatActivity {
                 // Handle the QR code scanning logic
                 // Assuming you have a ScanningQRActivity for scanning QR codes
                 Intent intent = new Intent(ScanActivity.this, ScanningQRActivity.class);
+                intent.putExtra("bikeId", bikeId);
                 intent.putExtra("parkId", parkId);
                 intent.putExtra("cycleCareId", cycleCareId);
                 startActivity(intent);

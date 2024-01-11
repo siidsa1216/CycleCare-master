@@ -108,14 +108,14 @@ public class CycleCareRegActivity extends AppCompatActivity {
         // Get a reference to the "bikes" node in the Firebase database
         DatabaseReference bikesRef = FirebaseDatabase.getInstance().getReference("CycleCareUnit");
         DatabaseReference lockRef = FirebaseDatabase.getInstance().getReference("LockActuator");
-        DatabaseReference sensorRef = FirebaseDatabase.getInstance().getReference("MotionSensor");
+
         boolean motionstate = false;
         boolean sensorstate = false;
+        boolean isoccupied = false;
 
         // Generate a unique key for the new bike entry
         String cyclecareId = bikesRef.push().getKey();
         String lockId = bikesRef.push().getKey();
-        String sensorId = bikesRef.push().getKey();
 
         // Create a HashMap to store bike information
         HashMap<String, Object> bikeMap = new HashMap<>();
@@ -129,6 +129,8 @@ public class CycleCareRegActivity extends AppCompatActivity {
         bikeMap.put("dateInstalled", dateInstalled);
         bikeMap.put("lockId", lockId);
         bikeMap.put("sensorId", lockId);
+        bikeMap.put("isoccupied", isoccupied);
+        bikeMap.put("sensorstate", sensorstate );
 
 
         // Save the bike information to the database
@@ -155,23 +157,6 @@ public class CycleCareRegActivity extends AppCompatActivity {
                     // Handle any errors that occurred during the save process
                     // For example, show an error message
                 });
-
-        // Create a HashMap to store bike information
-        HashMap<String, Object> sensorMap = new HashMap<>();
-        sensorMap.put("sensorId", sensorId);
-        sensorMap.put("state", sensorstate );
-
-
-        // Save the bike information to the database
-        sensorRef.child(sensorId).setValue(sensorMap)
-                .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(this, "Registered sucessfully", Toast.LENGTH_SHORT).show();;
-                })
-                .addOnFailureListener(e -> {
-                    // Handle any errors that occurred during the save process
-                    // For example, show an error message
-                });
-
 
 
     }

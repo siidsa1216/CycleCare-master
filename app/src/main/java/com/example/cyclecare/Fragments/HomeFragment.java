@@ -1,8 +1,6 @@
 package com.example.cyclecare.Fragments;
 
-import static android.content.Context.MODE_PRIVATE;
-
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,12 +15,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.cyclecare.Adapter.ParkAdapter;
 import com.example.cyclecare.HomeViewPager;
 import com.example.cyclecare.Model.Park;
 import com.example.cyclecare.Model.User;
+import com.example.cyclecare.NotificationActivity;
 import com.example.cyclecare.R;
 import com.example.cyclecare.databinding.FragmentHomeBinding;
 import com.google.firebase.auth.FirebaseAuth;
@@ -73,22 +71,24 @@ public class HomeFragment extends Fragment {
         parkAdapter = new ParkAdapter(getContext(), parkList);
         recyclerView.setAdapter(parkAdapter);
 
-        readPark();
-
         slideViewPager =(ViewPager) binding.sliderViewPages;
         indicatorLayout = (LinearLayout) binding.indicator;
 
         viewPagerAdapter = new HomeViewPager(getContext());
-
         slideViewPager.setAdapter(viewPagerAdapter);
+        slideViewPager.addOnPageChangeListener(viewListener);
 
-
+        readPark();
         showUserProfile();
         setUpIndicators(0);
 
 
-        slideViewPager.addOnPageChangeListener(viewListener);
-
+        binding.notif.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), NotificationActivity.class));
+            }
+        });
 
         return view;
     }
@@ -96,16 +96,19 @@ public class HomeFragment extends Fragment {
 
     private void readPark() {
 
-
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Park");
 
         reference.child(userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 parkList.clear();
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    Park park = dataSnapshot.getValue(Park.class);
-                    parkList.add(park);
+                if (snapshot.exists()) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        Park park = dataSnapshot.getValue(Park.class);
+                        if (park != null && !park.getStatus()) {
+                            parkList.add(park);
+                        }
+                    }
                 }
 
                 toggleDefaultTextVisibility();

@@ -81,7 +81,12 @@ public class BikeProfileFragment extends Fragment {
                 bikeList.clear();
                 for (DataSnapshot dataSnapshot:snapshot.getChildren()){
                     Bike bike = dataSnapshot.getValue(Bike.class);
-                    bikeList.add(bike);
+
+
+                    if (bike != null) {
+                        bikeList.add(bike);
+                    }
+
                 }
 
                 toggleDefaultTextVisibility();

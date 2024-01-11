@@ -12,10 +12,10 @@
         android:id="@+id/backBtn"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_marginTop="25dp"
-        android:background="@drawable/back_icon"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/info_icon"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.077"
+        app:layout_constraintHorizontal_bias="0.919"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -82,54 +82,55 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/emailayout"
-        android:layout_width="327dp"
-        android:layout_height="60dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:id="@+id/emailtxtLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:maxLines="1"
         android:layout_marginTop="20dp"
-        app:startIconDrawable="@drawable/email_icon"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        app:startIconDrawable="@drawable/person_icon"
         app:layout_constraintEnd_toEndOf="parent"
-        app:boxStrokeWidth="0dp"
-        app:boxBackgroundColor="@android:color/transparent"
-        app:boxStrokeColor="@color/white"
+        android:hint="Email"
+        app:helperTextTextColor="@color/red"
+        app:errorEnabled="true"
+        app:endIconMode="clear_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textview"
         android:outlineAmbientShadowColor="@color/white"
         >
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/emailtxt"
-            android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins"
-            android:singleLine="true"
-            android:hint="Email"/>
+            android:singleLine="true"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/PasswordLayout"
-        android:layout_width="327dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="10dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
         app:startIconDrawable="@drawable/lock_icon"
         app:passwordToggleEnabled="true"
-        android:maxLines="1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:boxStrokeWidth="0dp"
-        app:boxBackgroundColor="@android:color/transparent"
-        app:boxStrokeColor="@color/white"
+        android:maxLines="1"
+        app:errorEnabled="true"
+        android:hint="Password"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailayout"
+        app:layout_constraintTop_toBottomOf="@+id/emailtxtLayout"
         android:outlineAmbientShadowColor="@color/white">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/passwordtxt"
-            android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins"
-            android:hint="Password"
             android:maxLines="1"
             android:singleLine="true"
             android:inputType="textPassword"/>
@@ -144,7 +145,8 @@
         android:layout_height="20dp"
         android:fontFamily="@font/poppins"
         android:text="Forgot Password?"
-        android:textColor="#80000000"
+        android:textColor="@color/aquamarine"
+        android:clickable="true"
         android:textSize="14sp"
         android:maxLines="1"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -152,7 +154,7 @@
         app:layout_constraintHorizontal_bias="0.853"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/PasswordLayout"
-        app:layout_constraintVertical_bias="0.081" />
+        app:layout_constraintVertical_bias="0" />
 
     <Button
         android:id="@+id/loginBtn"
@@ -169,21 +171,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/forgotPass" />
 
+
     <TextView
         android:id="@+id/noAccount"
         android:layout_width="wrap_content"
         android:layout_height="17dp"
         android:fontFamily="@font/poppins"
         android:text="Don't have an account yet?"
-        android:textColor="#000000"
+        android:textColor="@color/aquamarine"
         android:textSize="14sp"
-        android:textStyle="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/loginBtn"
-        app:layout_constraintVertical_bias="0.111" />
-
+        app:layout_constraintVertical_bias="0.264" />
 
     <ProgressBar
         android:id="@+id/progressBar"

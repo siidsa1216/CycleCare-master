@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace 'com.example.cyclecare'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.example.cyclecare"
         minSdk 28
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -40,15 +40,16 @@ android {
 dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'com.google.android.material:material:1.11.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'com.google.firebase:firebase-firestore-ktx:24.7.1'
-    implementation 'com.google.firebase:firebase-database-ktx:20.2.2'
-    implementation 'com.google.firebase:firebase-auth-ktx:22.1.1'
-    implementation 'com.google.firebase:firebase-firestore:24.7.1'
-    implementation 'com.google.firebase:firebase-storage:20.2.1'
-    implementation 'androidx.navigation:navigation-fragment:2.4.1'
-    implementation 'androidx.navigation:navigation-ui:2.4.1'
+    implementation 'com.google.firebase:firebase-firestore-ktx:24.10.0'
+    implementation 'com.google.firebase:firebase-database-ktx:20.3.0'
+    implementation 'com.google.firebase:firebase-auth-ktx:22.3.0'
+    implementation 'com.google.firebase:firebase-storage:20.3.0'
+    implementation 'androidx.navigation:navigation-fragment:2.7.6'
+    implementation 'androidx.navigation:navigation-ui:2.7.6'
+    implementation 'com.google.firebase:firebase-messaging:23.4.0'
+    implementation 'com.google.firebase:firebase-functions:20.4.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
@@ -69,5 +70,11 @@ dependencies {
 
     implementation 'com.etebarian:meow-bottom-navigation:1.2.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.61"
-   
+
+    implementation 'com.pusher:push-notifications-android:1.9.0'
+    testImplementation 'junit:junit:4.12'
+    implementation platform('com.google.firebase:firebase-bom:28.0.1')
+    implementation 'com.google.firebase:firebase-analytics'
 }
+
+apply plugin: 'com.google.gms.google-services'

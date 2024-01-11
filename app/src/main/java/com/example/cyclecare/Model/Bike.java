@@ -2,18 +2,11 @@ package com.example.cyclecare.Model;
 
 public class Bike {
     String bikeId, bikeName, bikeModel, bikeBrand, bikeImg;
+    Boolean isparked;
 
 
     public Bike() {
 
-    }
-
-    public Bike(String bikeId, String bikeName, String bikeModel, String bikeBrand, String bikeImg) {
-        this.bikeId = bikeId;
-        this.bikeName = bikeName;
-        this.bikeModel = bikeModel;
-        this.bikeBrand = bikeBrand;
-        this.bikeImg = bikeImg;
     }
 
     public String getBikeId() {
@@ -54,5 +47,13 @@ public class Bike {
 
     public void setBikeImg(String bikeImg) {
         this.bikeImg = bikeImg;
+    }
+
+    public Boolean getIsparked() {
+        return isparked;
+    }
+
+    public void setIsparked(Boolean isparked) {
+        this.isparked = isparked;
     }
 }

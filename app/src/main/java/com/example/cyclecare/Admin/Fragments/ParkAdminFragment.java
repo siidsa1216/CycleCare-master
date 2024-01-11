@@ -54,7 +54,7 @@ public class ParkAdminFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         cycleCareList = new ArrayList<>();
-        cycleCareUnitAdapter = new CycleCareUnitAdapter(getContext(), cycleCareList);
+        cycleCareUnitAdapter = new CycleCareUnitAdapter(getContext(), cycleCareList, true);
         recyclerView.setAdapter(cycleCareUnitAdapter);
 
         readCycleCare();

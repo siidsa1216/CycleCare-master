@@ -10,6 +10,7 @@
     <color name="active">#61876E</color>
     <color name="pastel_green">#A6BB8D</color>
     <color name="gray">#E6E6E6</color>
+    <color name="red">#FF0000</color>
 
 </resources>
 

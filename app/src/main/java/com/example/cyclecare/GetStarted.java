@@ -1,5 +1,6 @@
 package com.example.cyclecare;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
@@ -12,8 +13,17 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.cyclecare.Admin.AdminMainActivity;
+import com.example.cyclecare.Model.User;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class GetStarted extends AppCompatActivity {
 
@@ -30,14 +40,8 @@ public class GetStarted extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.getstarted);
-
-        mAuth = FirebaseAuth.getInstance();
-
-        //check if the user is already signed in
-        if (mAuth.getCurrentUser() != null){
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            finish();
-        }
+//
+//        mAuth = FirebaseAuth.getInstance();
 
 
         skipBtn = findViewById(R.id.skipBtn);
@@ -72,6 +76,8 @@ public class GetStarted extends AppCompatActivity {
 
         slideViewPager.addOnPageChangeListener(viewListener);
     }
+
+
 
     public void setUpIndicators(int position){
         dots = new TextView[3];

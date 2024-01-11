@@ -19,14 +19,6 @@ public class ConnectCycleCareActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        binding.backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //code
-            }
-        });
-
-
         binding.connectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

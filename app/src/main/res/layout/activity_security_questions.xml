@@ -7,27 +7,28 @@
     tools:context=".SecurityQuestionsActivity">
 
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/back_icon"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.102"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<!--    <ImageView-->
+<!--        android:id="@+id/imageView"-->
+<!--        android:layout_width="24dp"-->
+<!--        android:layout_height="24dp"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:layout_marginTop="40dp"-->
+<!--        android:background="@drawable/back_icon"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.102"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
+
 
     <ImageView
         android:id="@+id/image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
         android:background="@drawable/security_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/heading"
@@ -50,12 +51,12 @@
             android:layout_marginLeft="30dp"
             />
 
-        <ImageView
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:background="@drawable/info_icon"
-            android:layout_marginStart="90dp"
-            />
+<!--        <ImageView-->
+<!--            android:layout_width="28dp"-->
+<!--            android:layout_height="28dp"-->
+<!--            android:background="@drawable/info_icon"-->
+<!--            android:layout_marginStart="90dp"-->
+<!--            />-->
 
 
     </androidx.appcompat.widget.LinearLayoutCompat>
@@ -75,9 +76,12 @@
             android:id="@+id/spinner"
             android:layout_width="321dp"
             android:layout_height="50dp"
+            android:minHeight="50dp"
             android:layout_centerInParent="true"
             android:dropDownWidth="match_parent"
-            android:popupBackground="@color/aquamarine"
+            android:popupBackground="@color/white"
+            android:singleLine="false"
+            android:background="@drawable/shape_10dp_border"
 
             />
 
@@ -86,7 +90,6 @@
             android:layout_width="321dp"
             android:layout_height="50dp"
             android:layout_below="@id/spinner"
-            android:layout_marginTop="8dp"
             android:background="@drawable/shape_10dp_border"
             android:hint="Your Answer"
             android:paddingStart="20dp" />
@@ -96,9 +99,13 @@
             android:id="@+id/spinner1"
             android:layout_width="321dp"
             android:layout_height="50dp"
+            android:minHeight="50dp"
+            android:layout_marginTop="20dp"
             android:layout_centerInParent="true"
             android:dropDownWidth="match_parent"
-            android:popupBackground="@color/aquamarine"
+            android:popupBackground="@color/white"
+            android:singleLine="false"
+            android:background="@drawable/shape_10dp_border"
 
             />
 
@@ -107,7 +114,6 @@
             android:layout_width="321dp"
             android:layout_height="50dp"
             android:layout_below="@id/spinner"
-            android:layout_marginTop="8dp"
             android:background="@drawable/shape_10dp_border"
             android:hint="Your Answer"
             android:paddingStart="20dp" />
@@ -117,9 +123,13 @@
             android:id="@+id/spinner2"
             android:layout_width="321dp"
             android:layout_height="50dp"
+            android:minHeight="50dp"
+            android:layout_marginTop="20dp"
             android:layout_centerInParent="true"
             android:dropDownWidth="match_parent"
-            android:popupBackground="@color/aquamarine"
+            android:popupBackground="@color/white"
+            android:singleLine="false"
+            android:background="@drawable/shape_10dp_border"
 
             />
 
@@ -128,7 +138,6 @@
             android:layout_width="321dp"
             android:layout_height="50dp"
             android:layout_below="@id/spinner"
-            android:layout_marginTop="8dp"
             android:background="@drawable/shape_10dp_border"
             android:hint="Your Answer"
             android:paddingStart="20dp" />

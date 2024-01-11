@@ -5,11 +5,43 @@
     android:layout_height="match_parent"
     tools:context=".Admin.Fragments.ReportsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/defaultText"
+        android:orientation="vertical"
+        android:visibility="invisible"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/parkedBiketxt">
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="120dp"
+            android:background="@drawable/bike_svg"
+            android:layout_gravity="center_horizontal"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="You don't have a bike parking in CycleCare."
+            android:textSize="14sp"
+            android:visibility="visible"
+            android:layout_marginHorizontal="80dp"
+            android:fontFamily="@font/poppins"
+            android:textAlignment="center"
+            android:layout_marginTop="10dp"
+            />
+
+    </LinearLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment"
-        android:background="@color/neon_green"/>
+        android:id="@+id/recyclerViewReports"
+        android:layout_marginTop="70dp"/>
 
 </FrameLayout>

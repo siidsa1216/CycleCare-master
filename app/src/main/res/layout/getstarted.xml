@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="24dp"
         android:layout_marginTop="28dp"
-        android:text="Skip"
+        android:drawableStart="@drawable/ic_baseline_close_24"
         android:fontFamily="@font/poppins"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"

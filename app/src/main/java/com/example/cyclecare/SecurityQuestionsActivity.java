@@ -59,26 +59,32 @@ public class SecurityQuestionsActivity extends AppCompatActivity {
 
         setupSpinners();
         submitBtn.setOnClickListener(v -> saveToFirebase());
-    } //ewaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaannnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+    }
+
 
     private void setupSpinners() {
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                this,
-                R.array.questions_array,
-                android.R.layout.simple_spinner_item
-        );
+        // Create separate string arrays for each set of questions
+        String[] questionsArray1 = getResources().getStringArray(R.array.questions_array1);
+        String[] questionsArray2 = getResources().getStringArray(R.array.questions_array2);
+        String[] questionsArray3 = getResources().getStringArray(R.array.questions_array3);
 
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> adapter1 = new ArrayAdapter<>(this, R.layout.custom_spinner_item, questionsArray1);
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<>(this, R.layout.custom_spinner_item, questionsArray2);
+        ArrayAdapter<String> adapter3 = new ArrayAdapter<>(this, R.layout.custom_spinner_item, questionsArray3);
 
-        spinner.setAdapter(adapter);
-        spinner1.setAdapter(adapter);
-        spinner2.setAdapter(adapter);
+        adapter1.setDropDownViewResource(R.layout.custom_spinner_dropdown_item);
+        adapter2.setDropDownViewResource(R.layout.custom_spinner_dropdown_item);
+        adapter3.setDropDownViewResource(R.layout.custom_spinner_dropdown_item);
 
-        // Set spinner item selected listeners
+        spinner.setAdapter(adapter1);
+        spinner1.setAdapter(adapter2);
+        spinner2.setAdapter(adapter3);
+
         spinner.setOnItemSelectedListener(new SpinnerItemSelected(editTextAnswer1));
         spinner1.setOnItemSelectedListener(new SpinnerItemSelected(editTextAnswer2));
         spinner2.setOnItemSelectedListener(new SpinnerItemSelected(editTextAnswer3));
     }
+
 
     private void saveToFirebase() {
         String answer1 = editTextAnswer1.getText().toString().trim();
@@ -126,7 +132,7 @@ public class SecurityQuestionsActivity extends AppCompatActivity {
     private void showSuccessDialog() {
 
         ConstraintLayout successConstraintLayout = findViewById(R.id.successConstraintLayout);
-        View view = LayoutInflater.from(SecurityQuestionsActivity.this).inflate(R.layout.success_dialog, successConstraintLayout);
+        View view = LayoutInflater.from(SecurityQuestionsActivity.this).inflate(R.layout.securityquestionlayoutdialog, successConstraintLayout);
 
         // Use the inflated view to find the button
         Button successDone = view.findViewById(R.id.successDone);
@@ -139,7 +145,7 @@ public class SecurityQuestionsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 alertDialog.dismiss();
-                startActivity(new Intent(SecurityQuestionsActivity.this, login.class));
+                startActivity(new Intent(SecurityQuestionsActivity.this, MainActivity.class));
                 finish();
             }
         });

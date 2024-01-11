@@ -4,8 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -21,6 +24,7 @@ import com.example.cyclecare.Model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -34,6 +38,7 @@ public class login extends AppCompatActivity {
 
     ImageView backBtn;
     TextView noAccount, forgotPass;
+    TextInputLayout emailtxtLayout, PasswordLayout;
     TextInputEditText emailtxt, passwordtxt;
     Button loginBtn;
     FirebaseAuth mAuth;
@@ -50,10 +55,33 @@ public class login extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         emailtxt = findViewById(R.id.emailtxt);
         loginBtn = findViewById(R.id.loginBtn);
+        emailtxtLayout = findViewById(R.id.emailtxtLayout);
+        PasswordLayout = findViewById(R.id.PasswordLayout);
         passwordtxt = findViewById(R.id.passwordtxt);
         progressBar = findViewById(R.id.progressBar);
         forgotPass = findViewById(R.id.forgotPass);
         loadingDialog = new LoadingDialog(login.this);
+
+        noAccount.setPaintFlags(noAccount.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+
+        emailtxt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // Not needed for this case
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                validateEmail(charSequence.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // Not needed for this case
+            }
+        });
+
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,23 +91,9 @@ public class login extends AppCompatActivity {
                 email = String.valueOf(emailtxt.getText());
                 password = String.valueOf(passwordtxt.getText());
 
-                if (email.isEmpty()) {
-                    emailtxt.setError("Field is required");
-                    emailtxt.requestFocus();
+                // Field validations
+                if (!validateEmail(email) || !validatePassword(password)) {
                     return;
-                }
-
-                if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-                    emailtxt.setError("Please provide a valid email");
-                    emailtxt.requestFocus();
-                    return;
-                }
-
-                if (password.isEmpty()) {
-                    passwordtxt.setError("Field is required");
-                    passwordtxt.requestFocus();
-                    return;
-
                 }
 
                 loadingDialog.startLoadingActivity();
@@ -94,7 +108,7 @@ public class login extends AppCompatActivity {
 
                             } else {
                                 //
-                                Toast.makeText(login.this, "Signup failed. Please try again.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(login.this, "Incorrect password or account not found.", Toast.LENGTH_SHORT).show();
                                 loadingDialog.dismissDialog();
                             }
                         }
@@ -123,6 +137,29 @@ public class login extends AppCompatActivity {
                 startActivity(new Intent(login.this, GetStarted.class));
             }
         });
+    }
+
+    private boolean validatePassword(String password) {
+        if (password.isEmpty()) {
+            PasswordLayout.setError("Field can't be empty");
+            return false;
+        }
+        PasswordLayout.setError(null);
+        return true;
+    }
+
+    private boolean validateEmail(String email) {
+        if (email.isEmpty()) {
+            emailtxtLayout.setError("Field can't be empty");
+            return false;
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            emailtxtLayout.setError("Please enter a valid email address");
+            return false;
+        } else {
+            emailtxtLayout.setError(null);
+            return true;
+        }
+
     }
 
     private void checkUserRole() {
@@ -162,9 +199,38 @@ public class login extends AppCompatActivity {
             startActivity(new Intent(getApplicationContext(), AdminMainActivity.class));
         } else {
             Toast.makeText(login.this, "Signup successful.", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+
+            checkIfAlreadyAnswered();
+
         }
 
         finish();    }
+
+    private void checkIfAlreadyAnswered() {
+
+// Reference to the VerificationQuestions node for the specific user
+        DatabaseReference verificationQuestionsRef = FirebaseDatabase.getInstance()
+                .getReference("VerificationQuestions").child(mAuth.getCurrentUser().getUid());
+
+        verificationQuestionsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Check if the user exists in the VerificationQuestions node
+                if (!dataSnapshot.exists()) {
+                    // User exists, you can access the data
+                    startActivity(new Intent(getApplicationContext(),PresecurityActivity.class));
+                } else {
+                    // User does not exist in the VerificationQuestions node
+                    // You can perform actions accordingly
+                    startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle error
+            }
+        });
+    }
 
 }

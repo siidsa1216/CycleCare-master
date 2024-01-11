@@ -25,6 +25,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
     Context context;
     List<User> userList;
 
+
+
     public UserAdapter(Context context, List<User> userList) {
         this.context = context;
         this.userList= userList;
@@ -79,4 +81,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
             accountStatus = itemView.findViewById(R.id.accountStatus);
         }
     }
+
 }
+
+

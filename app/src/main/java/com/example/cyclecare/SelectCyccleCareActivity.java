@@ -40,7 +40,7 @@ public class SelectCyccleCareActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         cycleCareList = new ArrayList<>();
-        cycleCareUnitAdapter = new CycleCareUnitAdapter(this, cycleCareList);
+        cycleCareUnitAdapter = new CycleCareUnitAdapter(this, cycleCareList, false);
         recyclerView.setAdapter(cycleCareUnitAdapter);
 
         readCycleCare();
@@ -57,7 +57,9 @@ public class SelectCyccleCareActivity extends AppCompatActivity {
                 for (DataSnapshot dataSnapshot:snapshot.getChildren()){
                     CycleCare cycleCare = dataSnapshot.getValue(CycleCare.class);
                     cycleCareList.add(cycleCare);
+
                 }
+
                 cycleCareUnitAdapter.notifyDataSetChanged();
 
             }

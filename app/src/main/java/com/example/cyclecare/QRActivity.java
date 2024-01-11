@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -16,7 +15,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.cyclecare.databinding.ActivityQractivityBinding;
@@ -30,7 +28,12 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
+import java.util.TimeZone;
+
 
 public class QRActivity extends AppCompatActivity {
 
@@ -41,6 +44,54 @@ public class QRActivity extends AppCompatActivity {
     String bikeId, bikeName, profileId, cycleCareId, parkId;
     String retrievedBikeId;
 
+    @Override
+    public void onBackPressed() {
+        // Uncomment the line below if you want to allow the back press
+        // super.onBackPressed();
+        super.onBackPressed();
+        showExitConfirmationDialog();
+        // Leave this method empty to disable the back press
+    }
+
+    private void showExitConfirmationDialog() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(QRActivity.this);
+        builder.setTitle("Confirmation");
+        builder.setMessage("Are you sure you want to quit parking?");
+
+        builder.setPositiveButton("Yes", (dialog, which) -> {
+            // Delete the saved park details
+            deleteSavedParkDetails();
+            finish(); // Close the activity
+        });
+
+        builder.setNegativeButton("No", (dialog, which) -> {
+            // Do nothing, just close the dialog
+            dialog.dismiss();
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void deleteSavedParkDetails() {
+        // Retrieve the parkId from SharedPreferences
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        String parkId = sharedPreferences.getString("parkId", "");
+
+        if (parkId != null && !parkId.isEmpty()) {
+            // Delete the park details from the database or perform any necessary cleanup
+            DatabaseReference parkRef = FirebaseDatabase.getInstance().getReference("Park");
+            parkRef.child(firebaseUser.getUid()).child(parkId).removeValue();
+
+            // Clear the parkId from SharedPreferences
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.remove("parkId");
+            editor.apply();
+
+            Toast.makeText(this, "Parking cancelled.", Toast.LENGTH_SHORT).show();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,10 +100,10 @@ public class QRActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
+
         firebaseDatabase = FirebaseDatabase.getInstance();  // Initialize FirebaseDatabase
         firebaseStorage = FirebaseStorage.getInstance();
 
-        // Retrieve bikeId from SharedPreferences
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         retrievedBikeId = sharedPreferences.getString("bikeId", "");
 
@@ -88,6 +139,15 @@ public class QRActivity extends AppCompatActivity {
                 parkYourBike();
             }
         });
+
+        binding.backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            startActivity(new Intent(QRActivity.this, SelectCyccleCareActivity.class));
+            }
+        });
+
     }
 
     private void showSuccessDialog(Bitmap qrCodeBitmap) {
@@ -106,6 +166,7 @@ public class QRActivity extends AppCompatActivity {
             public void onClick(View v) {
                 alertDialog.dismiss();
                 Intent intent = new Intent(QRActivity.this, ScanActivity.class);
+                intent.putExtra("bikeId", retrievedBikeId);
                 intent.putExtra("parkId", parkId);
                 intent.putExtra("cycleCareId", cycleCareId);
                 startActivity(intent);
@@ -119,19 +180,26 @@ public class QRActivity extends AppCompatActivity {
     }
 
     private void parkYourBike() {
+
+        TimeZone timeZone = TimeZone.getTimeZone("Asia/Manila");
+
         long timestamp = System.currentTimeMillis();
-        String dateTime = TimeStamp.convertTimestampToDateTime(timestamp);
+        String dateTime = convertTimestampToDateTime(timestamp, timeZone);
         long timeEnd = addNineHoursToTimestamp(timestamp);
-        String endTime = TimeStamp.convertTimestampToDateTime(timeEnd);
+        String endTime = convertTimestampToDateTime(timeEnd, timeZone);
         boolean status = false;
 
         DatabaseReference parkRef = FirebaseDatabase.getInstance().getReference("Park");
+        DatabaseReference QRRef = FirebaseDatabase.getInstance().getReference("QR");
+        DatabaseReference BikeRef = FirebaseDatabase.getInstance().getReference("Bikes");
         parkId = parkRef.push().getKey(); // Save parkId globally
 
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("parkId", parkId);
         editor.apply();
+
+
 
         // Create a HashMap to store parking information
         HashMap<String, Object> parkMap = new HashMap<>();
@@ -142,7 +210,7 @@ public class QRActivity extends AppCompatActivity {
         parkMap.put("QRCodeURL", "");
         parkMap.put("timeEnd", endTime);
         parkMap.put("timestamp", dateTime);
-        parkMap.put("status", status);
+        parkMap.put("status", status); //false if not ongoing
 
 
         parkRef.child(firebaseUser.getUid()).child(parkId).setValue(parkMap).addOnSuccessListener(aVoid -> {
@@ -153,7 +221,31 @@ public class QRActivity extends AppCompatActivity {
             // For example, show an error message
             Toast.makeText(this, "Unsuccessful", Toast.LENGTH_SHORT).show();
         });
+
+
+
+        QRRef.child(cycleCareId).child("parkId").setValue(profileId);
+        Log.d("UnLockActivity", "Received parkId: " + profileId);
+
+        BikeRef.child(profileId).child(retrievedBikeId).child("isparked").setValue(true);
+        Log.d("UnLockActivity", "Received bikeId: " + retrievedBikeId);
     }
+
+
+    private String convertTimestampToDateTime(long timestamp, TimeZone timeZone) {
+        // Use SimpleDateFormat to format the date and time
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+
+        // Set the time zone
+        sdf.setTimeZone(timeZone);
+
+        // Create a Date object from the timestamp
+        Date date = new Date(timestamp);
+
+        // Format the date as a string
+        return sdf.format(date);
+    }
+
 
     private long addNineHoursToTimestamp(long timestamp) {
         // Create a Calendar object and set its time to the timestamp

@@ -17,7 +17,6 @@ import com.example.cyclecare.databinding.ActivityViewStatusBinding;
 public class ViewStatusActivity extends AppCompatActivity {
 
     ActivityViewStatusBinding binding;
-    Context mContext;
     String parkId, cycleCareId;
 
     @Override

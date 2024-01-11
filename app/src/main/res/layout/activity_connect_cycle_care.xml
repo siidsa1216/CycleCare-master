@@ -9,17 +9,6 @@
 
 
     <ImageView
-        android:id="@+id/backBtn"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginTop="25dp"
-        android:background="@drawable/back_icon"
-        app:layout_constraintEnd_toStartOf="@+id/imageView"
-        app:layout_constraintHorizontal_bias="0.241"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
         android:id="@+id/imageView"
         android:layout_width="78dp"
         android:layout_height="49dp"

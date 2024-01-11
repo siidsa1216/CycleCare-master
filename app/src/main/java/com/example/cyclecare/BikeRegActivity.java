@@ -89,6 +89,7 @@ public class BikeRegActivity extends AppCompatActivity {
         String bikeName = String.valueOf(binding.bikeNametxt.getText()).trim();
         String bikeModel = String.valueOf(binding.bikeModeltxt.getText()).trim();
         String bikeBrand = String.valueOf(binding.bikeBrandtxt.getText()).trim();
+        Boolean isparked = false;
 
         // Get a reference to the "bikes" node in the Firebase database
         DatabaseReference bikesRef = FirebaseDatabase.getInstance().getReference("Bikes").child(profileId);
@@ -103,6 +104,7 @@ public class BikeRegActivity extends AppCompatActivity {
         bikeMap.put("bikeName", bikeName);
         bikeMap.put("bikeModel", bikeModel);
         bikeMap.put("bikeBrand", bikeBrand);
+        bikeMap.put("isparked", isparked);
         bikeMap.put("bikeImg", "");
 
 

@@ -4,11 +4,12 @@ package com.example.cyclecare;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 
 public class TimeStamp {
 
-    public static String convertTimestampToDateTime(long timestamp) {
+    public static String convertTimestampToDateTime(long timestamp, TimeZone timeZone) {
         try {
             // Create a Date object using the timestamp
             Date date = new Date(timestamp);
